@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 from classify import predict_image
      
 
-UPLOAD_FOLDER = './imagenes/'
+UPLOAD_FOLDER = './images/'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
