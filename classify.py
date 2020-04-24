@@ -10,21 +10,10 @@ from keras.applications.resnet50 import preprocess_input, decode_predictions
 import cv2 
 import numpy as np
 from IPython.display import Image, display
-
-ResNet50_model = ResNet50(weights='imagenet')
-face_cascade = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_alt.xml')
-## Loading the model
-json_file = open('VGG19_model.json', 'r')
-loaded_model_json = json_file.read()
-json_file.close()
-VGG19_model = model_from_json(loaded_model_json)
-# load weights into new model
-VGG19_model.load_weights("weights.best.VGG19.hdf5")
-print("Loaded model from disk")
+from keras import backend as K 
 
 dog_names_file = open('dog_names.json', 'r')
 dog_names = json.load(dog_names_file)
-
 def path_to_tensor(img_path):
     # loads RGB image as PIL.Image.Image type
     img = image.load_img(img_path, target_size=(224, 224))
@@ -34,6 +23,7 @@ def path_to_tensor(img_path):
     return np.expand_dims(x, axis=0)
 
 def face_detector(img_path):
+    face_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_frontalface_alt.xml')
     img = cv2.imread(img_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray)
@@ -48,11 +38,17 @@ def paths_to_tensor(img_paths):
     return np.vstack(list_of_tensors)
 
 def ResNet50_predict_labels(img_path):
+    ResNet50_model = ResNet50(weights='imagenet')
     # returns prediction vector for image located at img_path
     img = preprocess_input(path_to_tensor(img_path))
     return np.argmax(ResNet50_model.predict(img))
 
 def VGG19_predict_breed(img_path):
+    json_file = open('./model/VGG19_model.json', 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    VGG19_model = model_from_json(loaded_model_json)
+    VGG19_model.load_weights("./model/weights.best.VGG19.hdf5")
     # extract bottleneck features
     bottleneck_feature = extract_VGG19(path_to_tensor(img_path))
     # obtain predicted vector
@@ -61,10 +57,16 @@ def VGG19_predict_breed(img_path):
     return dog_names[np.argmax(predicted_vector)]
 
 def predict_image(img_path):
-    if (not dog_detector(img_path)) and (not face_detector(img_path)):
-        return "It seems that this image doesn't contain a human or a dog, please try again"
-    
-    display(Image(filename=img_path))
-    return VGG19_predict_breed(img_path).split('/')[2]
+    K.clear_session()
+    if (dog_detector(img_path)):
+        res = VGG19_predict_breed(img_path).split('/')[2]
+        res = res.split(".")[1]
+        return res
 
-print(predict_image("perro.jpg"))
+    if face_detector(img_path):
+        res = VGG19_predict_breed(img_path).split('/')[2]
+        res = res.split(".")[1]
+        return ("This is not a dog, but the most resembling dog breed is " + res)
+
+    else:    
+        return "It seems that this image doesn't contain a human or a dog, please try again"

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Dog Breed Classifier</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+    <style>
+        h1{
+            color:white;
+        }
+        label {
+            display: block;
+            width: 60vw;
+            max-width: 300px;
+            margin: 0 auto;
+            background-color: slateblue;
+            border-radius: 2px;
+            font-size: 1em;
+            line-height: 2.5em;
+            text-align: center;
+            color: white;
+        }
+
+        label:hover {
+            background-color: cornflowerblue;
+        }
+
+        label:active {
+            background-color: mediumaquamarine;
+        }
+
+        input {
+            border: 0;
+            clip: rect(1px, 1px, 1px, 1px);
+            height: 1px; 
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: black;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="row text-center">
+        <h1>Dog breed detector</h1>
+        <form action="/go" method="POST" enctype="multipart/form-data">
+            <label for="apply"><input type="file" name="file" id="apply" accept="image/jpeg" required>Get file</label>
+            <br><br>
+            <button type="submit" class="btn btn-primary">Detect breed</button>
+            {% block message %}
+            {% endblock %}
+        </form>
+    </div>
+
+</body>
+</html>
