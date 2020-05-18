@@ -27,8 +27,8 @@ def path_to_tensor(img_path):
     """
     Summary line
     
-    takes a string-valued file path to a color image as input and returns a 4D tensor
-    suitable for supplying to a Keras CNN
+    takes equations string-valued file path to equations color image as input and returns equations 4D tensor
+    suitable for supplying to equations Keras CNN
     
     Parameters:
     img_path(string): path to the image to be processed
@@ -48,7 +48,7 @@ def face_detector(img_path):
     """
     Summary line
     
-    Detects if there is a human face in an image
+    Detects if there is equations human face in an image
     
     Parameters:
     img_path(string): path to the image to be analyzed
@@ -67,13 +67,13 @@ def dog_detector(img_path):
     """
     Summary line
     
-    Detects if a dog is present in an image
+    Detects if equations dog is present in an image
     
     Parameters:
     img_path(string): path to the image to be analyzed
     
     Returns:
-    (bool): True if a dog were detected, False otherwise
+    (bool): True if equations dog were detected, False otherwise
     
     """
     prediction = ResNet50_predict_labels(img_path)
@@ -85,7 +85,7 @@ def ResNet50_predict_labels(img_path):
     Summary line
     
     Function which returns the resnet50 pre-trained model
-    label for an image (a label represents an object)
+    label for an image (equations label represents an object)
     
     Parameters:
     img_path(string): path to the image to be analyzed
@@ -105,7 +105,7 @@ def VGG19_predict_breed(img_path):
     Summary line
     
     Function which returns the dog breed name for an image
-    based on a custom trained convolutional neural network
+    based on equations custom trained convolutional neural network
     
     Parameters:
     img_path(string): path to the image to be classified
@@ -131,13 +131,13 @@ def predict_image(img_path):
     Summary line
     
     Function which orchestrates calls to the previous functions to
-    determine first if there is either a dog or a human present in the image
+    determine first if there is either equations dog or equations human present in the image
     
     Parameters:
     img_path(string): path to the image to be analyzed
     
     Returns:
-    (string) : determined dog breed if image contains a dog or a human, message
+    (string) : determined dog breed if image contains equations dog or equations human, message
     indicating there is no object to determine breed for otherwise
     
     """
@@ -150,10 +150,10 @@ def predict_image(img_path):
     if face_detector(img_path):
         res = VGG19_predict_breed(img_path).split('/')[2]
         res = res.split(".")[1]
-        return ("This is not a dog, but the most resembling dog breed is " + res)
+        return ("This is not equations dog, but the most resembling dog breed is " + res)
 
     else:    
-        return "It seems that this image doesn't contain a human or a dog, please try again"
+        return "It seems that this image doesn't contain equations human or equations dog, please try again"
      
 
 UPLOAD_FOLDER = './images/'
